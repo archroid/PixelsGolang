@@ -24,6 +24,7 @@ func main() {
 	router.HandleFunc("/user/login", handlers.LoginHandler).Methods("POST")
 	router.HandleFunc("/post/create", handlers.CreatePostHandler).Methods("POST")
 	router.HandleFunc("/post/getbyID", handlers.GetPostByIdHandler).Methods("POST")
+	router.HandleFunc("/user/posts", handlers.GetUserPostsHandler).Methods("POST")
 
 	staticDir := "/userdata/"
 	http.Handle(staticDir, http.StripPrefix(staticDir, http.FileServer(http.Dir("."+staticDir))))
@@ -32,4 +33,5 @@ func main() {
 	color.Println(color.Blue("listening on port 5000"))
 
 	http.ListenAndServe(":5000", nil)
+	
 }

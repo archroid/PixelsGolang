@@ -70,7 +70,7 @@ func CreatePost(token string, imageurl string, caption string, id string) (entit
 		AuthToken: token,
 	}
 	if Database.Where(&user).Find(&user).RowsAffected == 0 {
-		return post, errors.New("Email not found!")
+		return post, errors.New("User not found!")
 	}
 
 	post = entities.Post{
@@ -99,3 +99,33 @@ func GetPostById(id string) (entities.Post, error) {
 
 	return post, nil
 }
+
+func GetUserPosts(token string) ([]entities.Post, error) {
+
+	user := entities.User{
+		AuthToken: token,
+	}
+
+	if Database.Where(&user).Find(&user).RowsAffected == 0 {
+		return nil, errors.New("User not found!")
+	}
+
+	var posts []entities.Post
+	Database.Where(&entities.Post{Email: user.Email}).Find(&posts)
+
+	return posts, nil
+
+}
+
+// func GetEmailByToken(token string) (email string, err error) {
+// 	user := entities.User{
+// 		AuthToken: token,
+// 	}
+
+// 	if Database.Where(&user).Find(&user).RowsAffected == 0 {
+// 		return user.AuthToken, errors.New("User not found!")
+// 	}
+
+// 	return user.Email, nil
+
+// }
